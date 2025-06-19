@@ -12,7 +12,7 @@ console.log('Initialised Synapse SDK...')
 const synapse = await Synapse.create({
   privateKey: PRIVATE_KEY,
   rpcURL: RPC_URLS.calibration.http,
-  authorization: GLIF_TOKEN || undefined,
+  authorization: GLIF_TOKEN ? `Bearer ${GLIF_TOKEN}` : undefined,
   withCDN: true,
 })
 
