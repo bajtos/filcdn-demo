@@ -59,7 +59,13 @@ console.log('Uploading content...')
 const uploadResult = await storage.upload(fileData)
 console.log(`Upload complete! CommP: ${uploadResult.commp}`)
 
+const url = `https://${await synapse.getSigner().getAddress()}.calibration.filcdn.io/${uploadResult.commp}`
+console.log('Fetching', url)
+const res = await fetch(url)
+console.log('Response:', res.status, res.statusText)
+
 // Download data from this provider
+console.log('Downloading from provider...')
 const data = await storage.providerDownload(uploadResult.commp)
 console.log('Retrieved:', new TextDecoder().decode(data))
 
