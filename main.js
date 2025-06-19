@@ -41,14 +41,22 @@ const storage = await synapse.createStorage({
   },
 })
 
+const fileData = new TextEncoder().encode(
+  '🚀 Welcome to decentralized storage on Filecoin! Your data is safe here. 🌍',
+)
+
+// Run preflight checks
+const preflight = await storage.preflightUpload(fileData.length)
+if (!preflight.allowanceCheck.sufficient) {
+  // The Filecoin Services deal is not sufficient
+  // You need to increase the allowance, e.g. via the web app
+  throw new Error('Allowance not sufficient.')
+}
+
 console.log('Uploading content...')
 
 // Upload data
-const uploadResult = await storage.upload(
-  new TextEncoder().encode(
-    '🚀 Welcome to decentralized storage on Filecoin! Your data is safe here. 🌍',
-  ),
-)
+const uploadResult = await storage.upload(fileData)
 console.log(`Upload complete! CommP: ${uploadResult.commp}`)
 
 // Download data from this provider
